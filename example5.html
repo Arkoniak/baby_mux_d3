@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<script src="https://d3js.org/d3.v5.min.js"></script>
+</head>
+<body>
+    <script>
+        var w = 960;
+        var h = 520;
+        var svg = d3.select("body").append("svg").attr("width", w).attr("height", h).append("g").attr("transform","translate(20,10)");
+
+svg.selectAll(".gridv").data(d3.range(48)).enter().append("path").attr("d",function(d) {return "M"+(20*d)+",0 v 500"}).style("stroke","#eee");
+svg.selectAll(".gridv").data(d3.range(26)).enter().append("path").attr("d",function(d) {return "M0,"+(20*d)+" h 940"}).style("stroke","#eee");
+
+        d3.json("/data/users.json", function(error, data) {
+            if (error) {
+                return console.warn(error);
+            }
+            d3.select("body")
+                .selectAll("p")
+                .data(data)
+                .enter()
+                .append("p")
+                .text(function(d) {
+                    return d.name + ", " + d.location;
+                });
+
+            console.log(data);
+        });
+    </script>
+</body>
+</html>

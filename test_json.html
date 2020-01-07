@@ -1,0 +1,97 @@
+<!doctype html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+	<style>
+		.svg-container {
+		    display: inline-block;
+		    position: relative;
+		    width: 50%;
+		    padding-bottom: 100%;
+		    vertical-align: top;
+		    overflow: hidden;
+		}
+		.svg-content {
+		    display: inline-block;
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		}
+	</style>
+</head>
+<body>
+
+<button type="button" id="launch">Launch</button>
+<br>
+<div id="container" class="svg-container"></div>
+
+<script>
+	var timer;
+	d3.select("#launch").on("click", run);
+
+    function run() {
+		timer = setInterval(update, 1000/25);
+		d3.select("#launch").text("Stop").on("click", stop);
+	};
+
+	function stop() {
+		clearInterval(timer);
+		timer=undefined;
+		d3.select("#launch").text("Launch").on("click", run);
+	}
+
+    function update() {
+        d3.json("/data")
+        .then(function(data) {
+            // console.log(data);
+            var svg = d3.select("div#container").select("svg")
+
+            svg.selectAll("rect").remove();
+            svg.selectAll("rect")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("width", 20)
+                .attr("height", 20)
+                .attr("fill", "steelblue")
+                .attr("x", function(d) { return d[0]*20; })
+                .attr("y", function(d) { return d[1]*20; })
+				.append("svg:title")
+				.text(function(d) {return "x: " + d[0] + ", y: " + d[1]});
+        },
+        function(error) {
+            console.warn(error);
+        })
+    };
+
+    d3.json("/data")
+        .then(function(data) {
+            // console.log(data);
+            var svg = d3.select("div#container").append("svg")
+				.attr("preserveAspectRatio", "xMinYMin meet")
+				.attr("viewBox", "0 0 1000 1000")
+				.classed("svg-content", true);
+                // .attr("width", 1000)
+                // .attr("height", 1000);
+
+			svg.selectAll(".gridv").data(d3.range(50)).enter().append("path").attr("d",function(d) {return "M"+(20*d)+",0 v 1000"}).style("stroke","#eee");
+			svg.selectAll(".gridv").data(d3.range(50)).enter().append("path").attr("d",function(d) {return "M0,"+(20*d)+" h 1000"}).style("stroke","#eee");
+
+            svg.selectAll("rect")
+                .data(data)
+                .enter()
+                .append("rect")
+                .attr("width", 20)
+                .attr("height", 20)
+                .attr("fill", "steelblue")
+                .attr("x", function(d) { return d[0]*20; })
+                .attr("y", function(d) { return d[1]*20; })
+				.append("svg:title")
+				.text(function(d) {return "x: " + d[0] + ", y: " + d[1]});
+        },
+        function(error) {
+            console.warn(error);
+        });
+</script>
+</body>
+</html>

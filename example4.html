@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<head>
+<style>
+    #container {
+        height: 100px;
+        width: 100px;
+        background-color: red;
+    }
+</style>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+</head>
+<body>
+    <div id="container"></div>
+
+    <script>
+        d3.select("#container")
+          .on("mouseover", function(){
+              d3.select(this)
+                .transition()
+                .duration(1000)
+                .style("background-color", "steelblue");
+          })
+          .on("mouseout", function(){
+              d3.select(this)
+                .transition()
+                .duration(1000)
+                .style("background-color", "red");
+          });
+    </script>
+</body>
+</html>

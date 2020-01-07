@@ -1,0 +1,23 @@
+<!doctype html>
+<html>
+<head>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+        .error {
+            color: red
+        }
+    </style>
+</head>
+<body>
+    <p>Error: This is dummy error.</p>
+    <p>First paragraph</p>
+    <p>Second paragraph</p>
+    <p>Continous reload!</p>
+
+    <script>
+        <!-- d3.selectAll("p").style("color", "green"); -->
+        <!-- d3.select("p").text("This is paragraph.") -->
+        d3.select("p").attr("class","error");
+    </script>
+</body>
+</html>
